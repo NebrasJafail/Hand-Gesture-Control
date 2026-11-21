@@ -2,8 +2,6 @@
 
 Control your computer with hand gestures. This is my capstone project for the General Assembly Data Science Bootcamp.
 
-**Video walkthrough:** _(paste your video link here)_
-
 ## What it does
 The webcam sees my hand. MediaPipe finds 21 points on the hand. A Random Forest model learns the gesture from these points. The computer can then do an action for each gesture. It helps when someone cannot use the keyboard or the mouse.
 
