@@ -3,32 +3,10 @@
 Control your computer with hand gestures. This is my capstone project for the General Assembly Data Science Bootcamp.
 
 ## What it does
-The webcam sees my hand. MediaPipe finds 21 points on the hand. A Random Forest model learns the gesture from these points. The computer can then do an action for each gesture. It helps when someone cannot use the keyboard or the mouse.
+The webcam sees my hand. MediaPipe finds 21 points on the hand. A Random Forest model learns the gesture from these points. The computer can then do an action for each gesture (for example: make a folder, write text, say "Yes" or "No", or send a "please call me" email). It helps when someone cannot use the keyboard or the mouse.
 
-## The 7 gestures (trained with the model)
-
-| Gesture | Action |
-|---|---|
-| open_palm | Make a new folder |
-| victory | Make a new text file |
-| ok | Write a line of text in the file |
-| fist | Close the window |
-| thumbs_up | Type "Yes" |
-| thumbs_down | Type "No" |
-| call_me | Prepare a "please call me" email (victory = send, fist = cancel) |
-
-## More gestures (hand shape rules, hands-free mode)
-These use simple finger rules (which fingers are up or down), not the model. They are part of the full computer-control app.
-
-| Hand shape | Action |
-|---|---|
-| Index finger only | Move the mouse |
-| Pinch (thumb + index) and release | Left click |
-| Index + pinky (horns) | Right click |
-| Index + middle fingers | Scroll up and down |
-| Index + middle + ring fingers | Volume (turn the hand like a knob) |
-| Two open hands | Open the on-screen keyboard |
-| Two fists | Voice note (Windows voice typing) |
+## The 7 gestures
+`open_palm`, `victory`, `ok`, `fist`, `thumbs_up`, `thumbs_down`, `call_me`
 
 ## What is in the notebook
 
