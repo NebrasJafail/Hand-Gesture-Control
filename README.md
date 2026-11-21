@@ -27,17 +27,6 @@ Hand_Gesture_Capstone.ipynb shows the full data science work, step by step:
 ## How a command is protected from mistakes
 A command runs only if the model is at least 80% sure, the same gesture is held for 8 frames in a row, and 3 seconds passed since the last command.
 
-## Run the notebook
-```
-pip install -r requirements.txt
-jupyter notebook Hand_Gesture_Capstone.ipynb
-```
-The notebook needs two files in the same folder:
-- `hand_landmarker.task`: the pre-trained MediaPipe hand landmark model (Google). It can be downloaded from the MediaPipe documentation.
-- `gestures.csv`: the data. It is created by the recording cells of the notebook.
-
-Do not use "Run All": the recording cells open the camera and write a new gestures.csv.
-
 ## Limits
 - The model was trained on my hand, with my camera and light. Other people and other light can give lower accuracy.
 - The computer-control part works on Windows only.
