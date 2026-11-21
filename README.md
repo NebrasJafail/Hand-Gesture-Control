@@ -33,4 +33,3 @@ A command runs only if the model is at least 80% sure, the same gesture is held 
 
 ## Credits
 - MediaPipe (Google) for the hand landmarks.
-- I used Claude (Anthropic) as an AI assistant to help me with code and explanations, and I studied and tested the project myself.
