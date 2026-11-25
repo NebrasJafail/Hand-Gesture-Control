@@ -70,3 +70,6 @@ The model looks at only 1 frame out of 3, and the picture on the page updates ev
 ## Credits
 
 MediaPipe (Google) for the hand landmarks.
+
+## Website 
+- Link: https://hand-gesture-control.streamlit.app/
