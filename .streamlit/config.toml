@@ -1,0 +1,15 @@
+# Theme colors: pink + soft blue (same palette as the logo).
+# Streamlit shows both themes. The user switches in the menu (top right) > Settings:
+# Light, Dark, or "Use system setting".
+
+[theme.light]
+primaryColor = "#E4A1B4"
+backgroundColor = "#FBFBFE"
+secondaryBackgroundColor = "#EEEDFF"
+textColor = "#14123A"
+
+[theme.dark]
+primaryColor = "#EEAABD"
+backgroundColor = "#1E1E43"
+secondaryBackgroundColor = "#2A2A5C"
+textColor = "#EDEDFB"
