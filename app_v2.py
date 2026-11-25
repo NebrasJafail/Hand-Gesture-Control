@@ -35,6 +35,8 @@ import zoom_mode as zm           # zoom with two open hands (apart = in, togethe
 
 VICTORY_STILL = 1.0   # seconds without scrolling before the victory command may run
 KEYBOARD_STILL = 1.0  # two open hands must be STILL this long before the keyboard opens (else it is zoom)
+PREDICT_EVERY = 3     # the model looks at 1 frame out of 3 (the instructor's tip: do not send every frame)
+SHOW_EVERY = 2        # the picture on the page updates every 2nd frame
 
 camera_number = 0
 backend = "Default"   # or "DirectShow"
@@ -256,6 +258,7 @@ if camera_on:
     zoom_state = zm.new_zoom_state()
     mode, mode_text, last_mode_text = None, "", ""
     last_panel = None
+    frame_no, last_pred = 0, None
     failed_reads = 0
     try:
         while True:
@@ -269,7 +272,9 @@ if camera_on:
                 continue
             failed_reads = 0
             h, w = frame.shape[:2]
-            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame_no += 1
+            # a smaller picture for MediaPipe = faster (the 21 points are normalized: same numbers)
+            rgb = cv2.cvtColor(cv2.resize(frame, (480, int(480 * h / w))), cv2.COLOR_BGR2RGB)
             result = detector.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb))
 
             show = cv2.flip(frame, 1)
@@ -285,10 +290,14 @@ if camera_on:
                 if two is not None:
                     label, conf = two, 1.0               # two-hand gesture (rules, no model)
                 else:
-                    row = gc2.hand_to_row(hand, feature_cols)     # only the selected numbers
-                    probs = model.predict_proba(row)[0]
-                    best = probs.argmax()
-                    label, conf = model.classes_[best], probs[best]
+                    # the model looks at only 1 frame out of PREDICT_EVERY (lighter + faster);
+                    # in between we keep the last answer. The hand points still update every frame.
+                    if frame_no % PREDICT_EVERY == 0 or last_pred is None:
+                        row = gc2.hand_to_row(hand, feature_cols)     # only the selected numbers
+                        probs = model.predict_proba(row)[0]
+                        best = probs.argmax()
+                        last_pred = (model.classes_[best], probs[best])
+                    label, conf = last_pred
                     label = poses.fix_thumb_label(hand, label)     # pinky decides: thumbs_up / call_me
                     pose = poses.update_pose(pose_state, hand)    # POINT / HORNS / TWO / THREE / None
                     if pose == "POINT" and mouse_on:
@@ -301,6 +310,7 @@ if camera_on:
                         new_mode = "VOLUME"
             else:
                 pose_state = poses.new_pose_state()
+                last_pred = None
 
             # leaving a mode: let go of the mouse button / reset the volume knob
             if new_mode != mode:
@@ -353,8 +363,9 @@ if camera_on:
                                             + ": " + result_text)
                 show_status(mode_text)
 
-            small = cv2.resize(show, (640, int(640 * show.shape[0] / show.shape[1])))   # smaller picture = faster
-            frame_box.image(cv2.cvtColor(small, cv2.COLOR_BGR2RGB), channels="RGB", output_format="JPEG")
+            if frame_no % SHOW_EVERY == 0:               # send the picture to the page every 2nd frame
+                small = cv2.resize(show, (640, int(640 * show.shape[0] / show.shape[1])))
+                frame_box.image(cv2.cvtColor(small, cv2.COLOR_BGR2RGB), channels="RGB", output_format="JPEG")
             panel = status_html(label, conf, hands, mode, pose)
             if panel != last_panel:                      # send the panel only when something changed
                 info_box.markdown(panel, unsafe_allow_html=True)
