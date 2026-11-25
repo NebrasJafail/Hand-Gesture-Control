@@ -1,3 +1,5 @@
+<p align="center"><img src="wavely_logo.jpg" width="600" alt="Wavely logo"></p>
+
 # Hand Gesture Control
 
 Control your computer with hand gestures. This is my capstone project for the General Assembly Data Science Bootcamp.
